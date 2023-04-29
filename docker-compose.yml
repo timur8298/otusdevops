@@ -1,0 +1,75 @@
+version: "3"
+
+services:
+  mongodb:
+    image: mongo:4.2.18
+    ports:
+      - 27017:27017
+    networks:
+      - app_net
+    deploy:
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.labels.key == db
+
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=crawler
+      - RABBITMQ_DEFAULT_PASS=123456789
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/
+      - rabbitmq_log:/var/log/rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - app_net
+    deploy:
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.labels.key == db
+
+  crawler:
+    image: timur8298/crawler:test
+    environment:
+      - MONGO=mongodb
+      - MONGO_PORT=27017
+      - RMQ_HOST=rabbitmq
+      - RMQ_QUEUE=crawler
+      - RMQ_USERNAME=crawler
+      - RMQ_PASSWORD=123456789
+      - CHECK_INTERVAL=30
+      - EXCLUDE_URLS=.*github.com
+    ports:
+      - 8000:8000
+    networks:
+      - app_net
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  ui:
+    image: timur8298/ui:test
+    environment:
+      - MONGO=mongodb
+      - MONGO_PORT=27017
+    ports:
+      - 80:8000
+    networks:
+      - app_net
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+volumes:
+  mongo_db:
+  rabbitmq_data:
+  rabbitmq_log:
+
+networks:
+  app_net:
