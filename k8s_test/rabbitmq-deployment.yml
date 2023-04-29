@@ -22,5 +22,5 @@ spec:
         crawler-rabbitmq: "true"
     spec:
       containers:
-      - image: rabbitmq:3-management
+      - image: rabbitmq:3.9-management
         name: rabbitmq
