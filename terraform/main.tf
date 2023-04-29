@@ -23,7 +23,7 @@ resource "yandex_kubernetes_cluster" "testkube" {
     }
     public_ip = true
   }
-  name = "testkube"
+  name                    = "testkube"
   service_account_id      = var.k8s_account_id
   node_service_account_id = var.k8s_account_id
 }
@@ -42,8 +42,8 @@ resource "yandex_kubernetes_node_group" "test-group" {
     }
 
     resources {
-      cores         = 2
-      memory        = 4
+      cores         = 4
+      memory        = 12
       core_fraction = 100
     }
 
