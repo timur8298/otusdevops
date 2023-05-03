@@ -33,3 +33,12 @@ variable "k8s_account_id" {
 variable "network_id" {
   description = "network id"
 }
+variable "dns_account" {
+  description = "dns_account"
+}
+variable "dns_password" {
+  description = "dns_password"
+}
+variable "project_domain" {
+  description = "project_domain"
+}
