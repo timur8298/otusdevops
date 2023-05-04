@@ -1,0 +1,44 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ template "ui.fullname" . }}
+  annotations:
+    cert-manager.io/issuer: gitlab-issuer
+    kubernetes.io/ingress.provider: nginx
+    nginx.ingress.kubernetes.io/custom-http-errors: ""
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    chart: kas-6.2.2
+    heritage: Helm
+    app: {{ template "ui.fullname" . }}
+    component: ui
+    release: {{ .Release.Name }}
+  namespace: default
+spec:
+  ingressClassName: gitlab-nginx
+  rules:
+  - host: {{ .Values.domain }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ template "ui.fullname" . }}
+            port:
+              number: {{ .Values.port }}
+  tls:
+  - hosts:
+    - {{ .Values.domain }}
+    secretName: {{ template "ui.fullname" . }}-tls
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ template "ui.fullname" . }}
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: {{ template "ui.fullname" . }}.{{ .Release.Namespace }}

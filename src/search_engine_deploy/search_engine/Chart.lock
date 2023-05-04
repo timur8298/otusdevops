@@ -1,0 +1,15 @@
+dependencies:
+- name: ui
+  repository: file://../ui
+  version: 1.0.0
+- name: crawler
+  repository: file://../crawler
+  version: 1.0.0
+- name: mongodb
+  repository: https://charts.helm.sh/stable
+  version: 7.8.10
+- name: rabbitmq
+  repository: https://charts.bitnami.com/bitnami
+  version: 11.14.2
+digest: sha256:73bb8b7cf71cd888773e1f00ba9bfd703fe7f18de50343537c55eed9b7465f40
+generated: "2023-04-29T14:42:28.063961894Z"

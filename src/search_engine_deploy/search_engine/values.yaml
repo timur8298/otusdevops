@@ -1,0 +1,15 @@
+mongodb:
+  usePassword: false
+
+rabbitmq:
+  auth:
+    username: rabbituser
+    password: rabbitpass
+
+ui:
+  mongo:
+    host: ""
+
+crawler:
+  rmq:
+    host: ""

@@ -1,0 +1,7 @@
+name: ui
+apiVersion: v2
+version: 1.0.0
+description: User interface of Search engine
+maintainers:
+  - name: timur8298
+    email: semeneevtimur@yandex.ru

@@ -1,0 +1,7 @@
+name: crawler
+apiVersion: v2
+version: 1.0.0
+description: Crawler of search engine
+maintainers:
+  - name: timur8298
+    email: semeneevtimur@yandex.ru

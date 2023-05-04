@@ -1,0 +1,24 @@
+
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  image: alpine/k8s:1.27.1
+  only:
+    - triggers
+    - branches
+  script:
+    - kubectl version --client
+    - kubectl config get-contexts
+    - pwd
+    - ls -l
+    - echo "$CI_REGISTRY_USER/search_engine_ui"
+    - kubectl config use-context $(kubectl config get-contexts | tail -n +2 | head -n 1 | awk '{print $1};')
+    - helm ls
+    - kubectl describe ns "app" || kubectl create ns "app"
+    - >
+      helm upgrade --install searchengine -n app ./search_engine \
+        --set "ui.domain=timur8298.ru" \
+        --set "ui.image.repository=$CI_REGISTRY_USER/search_engine_ui" \
+        --set "crawler.image.repository=$CI_REGISTRY_USER/search_engine_crawler"

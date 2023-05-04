@@ -1,0 +1,15 @@
+---
+port: 8000
+
+image:
+  repository:
+  tag: master
+
+mongo:
+  port: 27017
+
+checkInterval: 60
+excludeUrls: ".*github.com"
+startUrl: "https://vitkhab.github.io/search_engine_test_site/"
+imagePullPolicy: Always
+domain:
