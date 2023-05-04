@@ -57,3 +57,10 @@ test:
         path: coverage.xml
   only:
     - branches
+
+deploy:
+  stage: deploy
+  trigger:
+    project: timur8298/search_engine_deploy
+  only:
+    - master
