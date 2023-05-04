@@ -34,11 +34,11 @@ variable "network_id" {
   description = "network id"
 }
 variable "dns_account" {
-  description = "dns_account"
+  description = "dns account login"
 }
 variable "dns_password" {
-  description = "dns_password"
+  description = "dns account password"
 }
 variable "project_domain" {
-  description = "project_domain"
+  description = "projec domain name"
 }
