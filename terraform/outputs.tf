@@ -52,7 +52,7 @@ resource "null_resource" "gitlab_create" {
 
       echo "Получение пароля root для gitlab"
       GITLAB_PASS="$(kubectl get secret gitlab-gitlab-initial-root-password -o jsonpath='{.data.password}' | base64 -d)"
-      echo "пароль получен, авторизуйтесь в  gitlab.${var.project_domain} Пользлватель:\n root Пароль:\n $GITLAB_PASS"
+      echo "пароль получен, авторизуйтесь в  gitlab.${var.project_domain} Пользлватель: root Пароль: $GITLAB_PASS"
     EOF
     interpreter = ["/bin/bash", "-c"]
   }
