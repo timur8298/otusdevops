@@ -5,3 +5,20 @@ description: Search engine
 maintainers:
   - name: timur8298
     email: semeneevtimur@yandex.ru
+dependencies:
+  - name: ui
+    version: "1.0.0"
+    repository: "file://../ui"
+
+  - name: crawler
+    version: "1.0.0"
+    repository: "file://../crawler"
+
+  - name: mongodb
+    version: 7.8.10
+    repository: https://charts.helm.sh/stable
+
+  - name: rabbitmq
+    alias: rabbitmq
+    version: 11.14.2
+    repository: https://charts.bitnami.com/bitnami
