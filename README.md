@@ -29,7 +29,14 @@
 Бот помещает в очередь url переданный ему при запуске. Затем он начинает обрабатывать все url в очереди. Для каждого url бот загружает содержимое страницы, записывая в БД связи между сайтами, между сайтами и словами. Все найденые на странице url помещает обратно в очередь.
 Веб-интерфейс минимален, предоставляет пользователю строку для запроса и результаты. Поиск происходит только по индексированным сайтам. Результат содержит только те страницы, на которых были найдены все слова из запроса. Рядом с каждой записью результата отображается оценка полезности ссылки (чем больше, тем лучше). Более подробно можно почитать в файлах Readme в папках src/search_engine_ui и src/search_engine_crawler либо по ссылкам проектов (https://github.com/express42/search_engine_crawler и https://github.com/express42/search_engine_ui)
 
-
+# требования к компьютеру, с которого запускается разворачивание инфраструктуры
+- Linux OS (WSL)
+- git
+- yc (https://cloud.yandex.ru/docs/cli/operations/install-cli)
+- terraform (https://cloud.yandex.ru/docs/tutorials/infrastructure-management/terraform-quickstart)
+- Helm v3 (https://helm.sh/ru/docs/intro/install/)
+- wget
+- jq
 # Установка
 Для развертывания инфраструктуры приложения в облаке yandex cloud, нужно скопировать 
 в папке terraform terraform.tfvars.example в файл terraform.tfvars
