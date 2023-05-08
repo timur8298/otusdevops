@@ -1,0 +1,21 @@
+name: monitoring
+apiVersion: v2
+version: 1.0.0
+description: Monitoring
+maintainers:
+  - name: timur8298
+    email: semeneevtimur@yandex.ru
+dependencies:
+
+  - name: kube-prometheus-stack
+    version: 45.25.0
+    repository: https://prometheus-community.github.io/helm-charts
+
+  - name: promtail
+    version: 6.11.1
+    repository: https://grafana.github.io/helm-charts
+
+  - name: loki-distributed
+    alias: loki
+    version: 0.69.14
+    repository: https://grafana.github.io/helm-charts

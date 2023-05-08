@@ -1,0 +1,46 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ template "monitoring.fullname" . }}
+  annotations:
+    cert-manager.io/issuer: gitlab-issuer
+    kubernetes.io/ingress.provider: nginx
+    meta.helm.sh/release-name: gitlab
+    meta.helm.sh/release-namespace: default
+    nginx.ingress.kubernetes.io/custom-http-errors: ""
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    chart: kas-6.11.0
+    heritage: Helm
+    app: {{ template "monitoring.fullname" . }}
+    component: ui
+    release: {{ .Release.Name }}
+  namespace: default
+spec:
+  ingressClassName: gitlab-nginx
+  rules:
+  - host: {{ .Values.domain }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ template "monitoring.fullname" . }}
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - {{ .Values.domain }}
+    secretName: {{ template "monitoring.fullname" . }}-tls
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ template "monitoring.fullname" . }}
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: {{ .Release.Name }}-grafana.{{ .Release.Namespace }}

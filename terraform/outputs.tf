@@ -53,6 +53,33 @@ resource "null_resource" "gitlab_create" {
       echo "Получение пароля root для gitlab"
       GITLAB_PASS="$(kubectl get secret gitlab-gitlab-initial-root-password -o jsonpath='{.data.password}' | base64 -d)"
       echo "пароль получен, авторизуйтесь в  gitlab.${var.project_domain} Пользлватель: root Пароль: $GITLAB_PASS"
+
+      echo "добавление токена для root"
+      export GITLAB_TOOLBOX=$(kubectl get pod | grep gitlab-toolbox | grep Running | awk '{print $1};')
+      kubectl exec $GITLAB_TOOLBOX -- gitlab-rails runner \
+        "token = User.find_by_username('root').personal_access_tokens.create(scopes: ['api'], name: 'Automation token'); token.set_token('${var.automation_token}'); token.save!"
+      
+      echo "Добавление группы в гитлабе"
+      export GROUP_ID=$(curl --request POST --header "PRIVATE-TOKEN: ${var.automation_token}" \
+        --header "Content-Type: application/json" \
+        --data '{"path": "${var.project_group}", "name": "${var.project_group}", "visibility": "public"}' \
+        "https://gitlab.${var.project_domain}/api/v4/groups/" | jq '.id')
+      echo $GROUP_ID
+
+      echo "Добавление переменных группы"
+      curl --request POST --header "PRIVATE-TOKEN: ${var.automation_token}" \
+        "https://gitlab.${var.project_domain}/api/v4/groups/$GROUP_ID/variables" --form "key=CI_REGISTRY_USER" --form "value=${var.docker_user}" --form "protected=true"
+      curl --request POST --header "PRIVATE-TOKEN: ${var.automation_token}" \
+        "https://gitlab.${var.project_domain}/api/v4/groups/$GROUP_ID/variables" --form "key=PROJECT_DOMAIN" --form "value=${var.project_domain}" --form "protected=true" --form "masked=true"
+      curl --request POST --header "PRIVATE-TOKEN: ${var.automation_token}" \
+        "https://gitlab.${var.project_domain}/api/v4/groups/$GROUP_ID/variables?key=CI_REGISTRY_PASSWORD&masked=true" \
+        --header "Content-Type: application/json" --data "{\"value\":\"${var.docker_pass}\"}"
+
+      echo "Добавление ssh открытого ключа"
+      curl --request POST --header "PRIVATE-TOKEN: ${var.automation_token}" \
+        --header "Content-Type: application/json" \
+        --data "{\"key\":\"$(cat ${var.public_key_path_ed})\"}" \
+        "https://gitlab.${var.project_domain}/api/v4/user/keys?title=ssh-cert"
     EOF
     interpreter = ["/bin/bash", "-c"]
   }

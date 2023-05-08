@@ -1,0 +1,20 @@
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  image: alpine/k8s:1.27.1
+  variables:
+    MONITORING_NS: monitoring
+  only:
+    - triggers
+    - branches
+  script:
+    - kubectl version --client
+    - kubectl config get-contexts
+    - kubectl config use-context $(kubectl config get-contexts | tail -n +2 | head -n 1 | awk '{print $1};')
+    - helm ls
+    - kubectl describe ns $MONITORING_NS || kubectl create ns $MONITORING_NS
+    - helm upgrade --install monitoring ./prometheus -n $MONITORING_NS -f ./values.yaml --set "domain=grafana.$PROJECT_DOMAIN"
+    - kubectl describe configmap grafana-search-engine -n $MONITORING_NS || kubectl create configmap grafana-search-engine -n $MONITORING_NS --from-file=grafana-search-engine.json
+    - kubectl label configmap grafana-search-engine -n $MONITORING_NS grafana_dashboard=1

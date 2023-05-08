@@ -1,0 +1,27 @@
+kube-prometheus-stack: 
+  prometheus:
+    prometheusSpec:
+      additionalScrapeConfigs:
+      - job_name: 'searchengine-crawler'
+        metrics_path: /metrics
+        static_configs:
+        - targets: ['searchengine-crawler.app:8000']
+      - job_name: 'searchengine-ui'
+        metrics_path: /metrics
+        static_configs:
+        - targets: ['searchengine-ui.app:8000']
+
+  grafana:
+    sidecar:
+      datasources:
+        defaultDatasourceEnabled: true
+    additionalDataSources:
+      - name: Loki
+        type: loki
+        url: http://{{ .Release.Name }}-loki-gateway
+
+promtail:
+  config:
+    clients:
+      - url: http://{{ .Release.Name }}-loki-gateway/loki/api/v1/push
+        tenant_id: 1

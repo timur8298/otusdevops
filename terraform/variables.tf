@@ -42,3 +42,18 @@ variable "dns_password" {
 variable "project_domain" {
   description = "projec domain name"
 }
+variable "public_key_path_ed" {
+  description = "public_key_path_ed"
+}
+variable "automation_token" {
+  description = "token"
+}
+variable "docker_user" {
+  description = "docker_user"
+}
+variable "docker_pass" {
+  description = "docker_pass"
+}
+variable "project_group" {
+  description = "projec group name"
+}

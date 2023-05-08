@@ -11,6 +11,7 @@
 .pytest_cache
 src/.env
 docker/.env
+src/monitoring/.git/
 src/search_engine_crawler/.git/
 src/search_engine_ui/.git/
 src/search_engine_deploy/.git/
