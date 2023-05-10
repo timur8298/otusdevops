@@ -1,6 +1,7 @@
 
 stages:
   - deploy
+  - notify
 
 deploy:
   stage: deploy
@@ -22,3 +23,11 @@ deploy:
         --set "ui.domain=$PROJECT_DOMAIN" \
         --set "ui.image.repository=$CI_REGISTRY_USER/search_engine_ui" \
         --set "crawler.image.repository=$CI_REGISTRY_USER/search_engine_crawler"
+    - sh ci-notify.sh "Deployed"
+
+notify_error:
+  stage: notify
+  image: alpine/k8s:1.27.1
+  script:
+    - sh ci-notify.sh "Deploy job failed"
+  when: on_failure

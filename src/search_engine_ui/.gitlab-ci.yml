@@ -8,6 +8,7 @@ stages:
   - release
   - cleanup
   - deploy
+  - notify
 
 build:
   stage: build

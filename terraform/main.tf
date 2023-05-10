@@ -16,7 +16,7 @@ provider "yandex" {
 resource "yandex_kubernetes_cluster" "testkube" {
   network_id = var.network_id
   master {
-    version = "1.21"
+    version = "1.23"
     zonal {
       zone      = var.zone
       subnet_id = var.subnet_id
@@ -31,7 +31,7 @@ resource "yandex_kubernetes_cluster" "testkube" {
 resource "yandex_kubernetes_node_group" "test-group" {
   cluster_id = yandex_kubernetes_cluster.testkube.id
   name       = "test-group"
-  version    = "1.21"
+  version    = "1.23"
 
   instance_template {
     platform_id = "standard-v2"

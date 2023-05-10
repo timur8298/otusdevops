@@ -11,6 +11,45 @@ kube-prometheus-stack:
         static_configs:
         - targets: ['searchengine-ui.app:8000']
 
+  alertmanager:
+    config:
+      global:
+        resolve_timeout: 5m
+        telegram_api_url: 'https://api.telegram.org'
+      route:
+        group_by: ['alertname', 'cluster', 'service']
+        group_wait: 30s
+        group_interval: 5m
+        repeat_interval: 1h
+        receiver: 'default-receiver'
+        routes:
+        - match:
+            alertname: DeadMansSwitch
+          receiver: 'null'
+      inhibit_rules:
+      - source_match:
+          severity: 'critical'
+        target_match:
+          severity: 'warning'
+        equal: ['alertname', 'cluster', 'service']
+      receivers:
+      - name: 'default-receiver'
+        telegram_configs:
+        - bot_token: ''
+          api_url: 'https://api.telegram.org'
+          chat_id: 53694183
+          parse_mode: 'HTML'
+          message: |
+            {{ range .Alerts }}
+              {{- if .Annotations.summary }}*Alert:* {{ .Annotations.summary }} - `{{ .Labels.severity }}`{{- end }}
+              *Description:* {{ .Annotations.description }}{{ .Annotations.message }}
+              *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>{{ if or .Annotations.runbook .Annotations.runbook_url }} *Runbook:* <{{ .Annotations.runbook }}{{ .Annotations.runbook_url }}|:spiral_note_pad:>{{ end }}
+              *Details:*
+              {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+              {{ end }}
+            {{ end }}
+      - name: 'null'
+
   grafana:
     sidecar:
       datasources:
@@ -19,6 +58,36 @@ kube-prometheus-stack:
       - name: Loki
         type: loki
         url: http://{{ .Release.Name }}-loki-gateway
+
+defaultRules:
+  create: true
+  rules:
+    alertmanager: true
+    etcd: true
+    configReloaders: true
+    general: true
+    k8s: false
+    kubeApiserverAvailability: true
+    kubeApiserverBurnrate: true
+    kubeApiserverHistogram: true
+    kubeApiserverSlos: true
+    kubeControllerManager: true
+    kubelet: true
+    kubeProxy: false
+    kubePrometheusGeneral: true
+    kubePrometheusNodeRecording: true
+    kubernetesApps: true
+    kubernetesResources: true
+    kubernetesStorage: true
+    kubernetesSystem: true
+    kubeScheduler: true
+    kubeStateMetrics: true
+    network: true
+    node: true
+    nodeExporterAlerting: true
+    nodeExporterRecording: true
+    prometheus: true
+    prometheusOperator: true
 
 promtail:
   config:

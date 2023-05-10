@@ -55,5 +55,14 @@ variable "docker_pass" {
   description = "docker_pass"
 }
 variable "project_group" {
-  description = "projec group name"
+  description = "project group name"
+}
+variable "project_email" {
+  description = "project email gitlab certamanager"
+}
+variable "telegramm_bot_token" {
+  description = "telegramm bot token for chatops"
+}
+variable "telegram_chat_id" {
+  description = "telegramm chat id for chatops"
 }

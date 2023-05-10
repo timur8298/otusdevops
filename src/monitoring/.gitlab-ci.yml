@@ -15,6 +15,6 @@ deploy:
     - kubectl config use-context $(kubectl config get-contexts | tail -n +2 | head -n 1 | awk '{print $1};')
     - helm ls
     - kubectl describe ns $MONITORING_NS || kubectl create ns $MONITORING_NS
-    - helm upgrade --install monitoring ./prometheus -n $MONITORING_NS -f ./values.yaml --set "domain=grafana.$PROJECT_DOMAIN"
+    - helm upgrade --install monitoring ./prometheus -n $MONITORING_NS -f ./values.yaml --set "domain=grafana.$PROJECT_DOMAIN" --set "kube-prometheus-stack.alertmanager.config.receivers[0].telegram_configs[0].bot_token=$TELEGRAM_BOT_TOKEN"
     - kubectl describe configmap grafana-search-engine -n $MONITORING_NS || kubectl create configmap grafana-search-engine -n $MONITORING_NS --from-file=grafana-search-engine.json
     - kubectl label configmap grafana-search-engine -n $MONITORING_NS grafana_dashboard=1
