@@ -42,6 +42,9 @@ variable "dns_password" {
 variable "project_domain" {
   description = "projec domain name"
 }
+variable "regru_main" {
+  description = "regru domain name"
+}
 variable "public_key_path_ed" {
   description = "public_key_path_ed"
 }
@@ -53,6 +56,7 @@ variable "docker_user" {
 }
 variable "docker_pass" {
   description = "docker_pass"
+  sensitive   = true
 }
 variable "project_group" {
   description = "project group name"
@@ -62,6 +66,7 @@ variable "project_email" {
 }
 variable "telegramm_bot_token" {
   description = "telegramm bot token for chatops"
+  sensitive   = true
 }
 variable "telegram_chat_id" {
   description = "telegramm chat id for chatops"

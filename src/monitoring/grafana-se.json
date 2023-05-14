@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 27,
+  "id": 11,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -538,9 +538,9 @@
       "id": 14,
       "options": {
         "dedupStrategy": "none",
-        "enableLogDetails": false,
+        "enableLogDetails": true,
         "prettifyLogMessage": false,
-        "showCommonLabels": true,
+        "showCommonLabels": false,
         "showLabels": false,
         "showTime": true,
         "sortOrder": "Descending",
@@ -576,7 +576,7 @@
       "id": 12,
       "options": {
         "dedupStrategy": "none",
-        "enableLogDetails": false,
+        "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": false,
         "showLabels": false,
@@ -614,8 +614,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Search Engine Dashboard",
-  "uid": "gzEzVh4fWuGaa1Sj",
+  "title": "SE Dashboard",
+  "uid": "gzEzVh4fWuGaa1Sj999",
   "version": 1,
   "weekStart": ""
 }

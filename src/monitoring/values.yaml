@@ -18,8 +18,8 @@ kube-prometheus-stack:
         telegram_api_url: 'https://api.telegram.org'
       route:
         group_by: ['alertname', 'cluster', 'service']
-        group_wait: 30s
-        group_interval: 5m
+        group_wait: 10s
+        group_interval: 10s
         repeat_interval: 1h
         receiver: 'default-receiver'
         routes:
@@ -43,7 +43,6 @@ kube-prometheus-stack:
             {{ range .Alerts }}
               {{- if .Annotations.summary }}*Alert:* {{ .Annotations.summary }} - `{{ .Labels.severity }}`{{- end }}
               *Description:* {{ .Annotations.description }}{{ .Annotations.message }}
-              *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>{{ if or .Annotations.runbook .Annotations.runbook_url }} *Runbook:* <{{ .Annotations.runbook }}{{ .Annotations.runbook_url }}|:spiral_note_pad:>{{ end }}
               *Details:*
               {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
               {{ end }}
@@ -58,36 +57,6 @@ kube-prometheus-stack:
       - name: Loki
         type: loki
         url: http://{{ .Release.Name }}-loki-gateway
-
-defaultRules:
-  create: true
-  rules:
-    alertmanager: true
-    etcd: true
-    configReloaders: true
-    general: true
-    k8s: false
-    kubeApiserverAvailability: true
-    kubeApiserverBurnrate: true
-    kubeApiserverHistogram: true
-    kubeApiserverSlos: true
-    kubeControllerManager: true
-    kubelet: true
-    kubeProxy: false
-    kubePrometheusGeneral: true
-    kubePrometheusNodeRecording: true
-    kubernetesApps: true
-    kubernetesResources: true
-    kubernetesStorage: true
-    kubernetesSystem: true
-    kubeScheduler: true
-    kubeStateMetrics: true
-    network: true
-    node: true
-    nodeExporterAlerting: true
-    nodeExporterRecording: true
-    prometheus: true
-    prometheusOperator: true
 
 promtail:
   config:

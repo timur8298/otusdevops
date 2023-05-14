@@ -10,7 +10,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-buffering: "off"
   labels:
     app.kubernetes.io/managed-by: Helm
-    chart: kas-6.11.0
+    chart: kas-6.11.3
     heritage: Helm
     app: {{ template "ui.fullname" . }}
     component: ui
