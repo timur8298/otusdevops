@@ -30,6 +30,9 @@ variable "private_key_path" {
 variable "k8s_account_id" {
   description = "k8s_account_id"
 }
+variable "nodes" {
+  description = "k8s nodes count"
+}
 variable "network_id" {
   description = "network id"
 }

@@ -15,4 +15,3 @@ ENV EXCLUDE_URLS '.*github.com'
 ENV START_URL 'https://vitkhab.github.io/search_engine_test_site/'
 
 CMD python -u crawler/crawler.py $START_URL
-

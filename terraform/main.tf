@@ -66,7 +66,7 @@ resource "yandex_kubernetes_node_group" "test-group" {
   }
   scale_policy {
     fixed_scale {
-      size = 1
+      size = var.nodes
     }
   }
 }
